@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Signature</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playwrite+DE+SAS+Guides&family=Playwrite+MX+Guides&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .playwrite-de-sas-guides-regular {
+            font-family: "Playwrite DE SAS Guides", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .playwrite-mx-guides-regular {
+            font-family: "Playwrite MX Guides", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+
+        .signature-preview {
+            border: 1px dashed #ccc;
+            padding: 10px;
+            height: auto;
+            min-height: 200px;
+            max-height: 200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-image: url('./sing.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .signature-preview .left-section {
+            flex: 1;
+            text-align: center;
+            font-size: 40px;
+
+            font-weight: bold;
+        }
+
+        .signature-preview .right-section {
+            flex: 1;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        select {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="bg-primary text-white py-3" style="padding-left: 30px;">
+        <h1>Medicing Enterprises - Signature Page</h1>
+    </header>
+
+    <div class="container">
+        <h3 class="text-center">Apply Your Signature</h3>
+        <form id="signatureForm">
+            <div class="mb-3">
+                <label for="signedBy" class="form-label">Signed By:</label>
+                <input type="text" id="signedBy" class="form-control" placeholder="Enter your name">
+            </div>
+
+            <div class="mb-3">
+                <label for="fontFamily" class="form-label">Select Font Family:</label>
+                <select id="fontFamily" class="form-select">
+                    <option value="Lucida Handwriting">Lucida Handwriting</option>
+                    <option value="playwrite-de-sas-guides-regular">Playwrite DE SAS Guides</option>
+                    <option value="Arial">Arial</option>
+                    <option value="cursive">Cursive</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Comic Sans MS">Comic Sans MS</option>
+                   
+                    <option value="Bradley Hand">Bradley Hand</option>
+                    <option value="Segoe Script">Segoe Script</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Choose Signature Type:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="signatureType" id="textSignature" value="text"
+                        checked>
+                    <label class="form-check-label" for="textSignature">Digital Signature</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="signatureType" id="imageSignature" value="image">
+                    <label class="form-check-label" for="imageSignature">Image</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="signatureType" id="freehandSignature"
+                        value="freehand">
+                    <label class="form-check-label" for="freehandSignature">Freehand</label>
+                </div>
+              
+                <!-- <div class="form-check">
+                    <input class="form-check-input" type="radio" name="signatureType" id="textSign"
+                        value="textSign">
+                    <label class="form-check-label" for="textSign">Text Sign</label>
+                </div> -->
+            </div>
+
+            <div class="mb-3" id="textSignatureInput">
+                <label for="textSignatureContent" class="form-label">Enter Signature Text:</label>
+                <input type="text" id="textSignatureContent" class="form-control" placeholder="Your Signature">
+            </div>
+            <!-- <div class="mb-3" id="textSignInputField" style="display: none;">
+                <label for="textSignInputField" class="form-label">Enter Signature Text:</label>
+                <input type="text" id="textSignInputField" class="form-control" placeholder="Your Signature">
+            </div> -->
+
+            <div class="mb-3 d-none" id="imageSignatureInput" >
+                <label for="imageSignatureUpload" class="form-label">Upload Signature Image:</label>
+                <input type="file" id="imageSignatureUpload" class="form-control">
+            </div>
+
+
+            <div class="mb-3 d-none" id="freehandSignatureInput">
+                <label for="freehandCanvas" class="form-label">Draw Your Signature:</label>
+                <canvas id="freehandCanvas" class="form-control signature-preview"
+                    style="height: 400px;width: 400px;"></canvas>
+                <button type="button" id="clearCanvas" class="btn btn-secondary mt-2">Clear</button>
+            </div>
+
+            <button type="button" id="previewButton" class="btn btn-primary">Preview</button>
+        </form>
+
+        <div id="previewSection" class="d-none mt-4">
+            <h4>Signature Preview</h4>
+            <div class="signature-preview" id="signature-preview" style="max-width: 400px;max-height: 100px;">
+                <div class="left-section" id="signatureContent"></div>
+                <div class="right-section" style="max-width: 150px">
+                    <p><strong>Digitally signed by</strong><br> <span id="previewSignedBy"></span></p>
+                    <p><strong>Date:</strong> <span id="previewDate"></span></p>
+                </div>
+            </div>
+
+            <button type="button" id="submitButton" class="btn btn-success d-none">Save</button>
+        </div>
+    </div>
+
+    <footer class="bg-primary text-white text-center py-3 mt-4">
+        <p>&copy; <span id="year"></span> Medicing Enterprises. All rights reserved</p>
+    </footer>
+
+
+    <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const yearSpan = document.getElementById("year");
+                yearSpan.textContent = new Date().getFullYear();
+
+                const textSignatureInput = document.getElementById("textSignatureInput");
+                const imageSignatureInput = document.getElementById("imageSignatureInput");
+                const freehandSignatureInput = document.getElementById("freehandSignatureInput");
+                const textSignature = document.getElementById("textSign");
+
+                const signatureTypeRadios = document.getElementsByName("signatureType");
+                const previewButton = document.getElementById("previewButton");
+                const submitButton = document.getElementById("submitButton");
+                const signatureContent = document.getElementById("signatureContent");
+                const previewSection = document.getElementById("previewSection");
+                const previewSignedBy = document.getElementById("previewSignedBy");
+                const previewDate = document.getElementById("previewDate");
+                const fontFamilySelect = document.getElementById("fontFamily");
+                const currentDate = new Date();
+                const currentDateFormatted = currentDate.toLocaleDateString();
+                const currentTimeFormatted = currentDate.toLocaleTimeString();
+                const timeZone = currentDate.toLocaleString('en-US', { timeZoneName: 'short' }).split(' ').pop();
+                const timezoneOffset = currentDate.getTimezoneOffset();
+
+                const canvas = document.getElementById("freehandCanvas");
+                const ctx = canvas.getContext("2d");
+                let isDrawing = false;
+
+                canvas.width = 400;
+                canvas.height = 150;
+
+                canvas.addEventListener("mousedown", () => { isDrawing = true; });
+                canvas.addEventListener("mouseup", () => { isDrawing = false; ctx.beginPath(); });
+                canvas.addEventListener("mousemove", (e) => {
+                    if (!isDrawing) return;
+                    ctx.lineWidth = 2;
+                    ctx.lineCap = "round";
+                    ctx.strokeStyle = "black";
+                    ctx.lineTo(e.offsetX, e.offsetY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(e.offsetX, e.offsetY);
+                });
+
+                document.getElementById("clearCanvas").addEventListener("click", () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                });
+
+                signatureTypeRadios.forEach((radio) => {
+                    radio.addEventListener("change", () => {
+                        textSignatureInput.classList.toggle("d-none", radio.value !== "text");
+                        imageSignatureInput.classList.toggle("d-none", radio.value !== "image");
+                        freehandSignatureInput.classList.toggle("d-none", radio.value !== "freehand");
+                        textSignature.classList.toggle("d-none", radio.value !== "textsign");
+                    });
+                });
+
+                previewButton.addEventListener("click", () => {
+                    const signedBy = document.getElementById("signedBy").value;
+                    if (!signedBy) {
+                        alert("Please enter your name.");
+                        return;
+                    }
+
+                    const selectedType = document.querySelector("input[name='signatureType']:checked").value;
+                    previewSignedBy.textContent = signedBy.toUpperCase();
+                    const currentDate = new Date();
+                    const currentDateFormatted = currentDate.toLocaleDateString();
+                    const currentTimeFormatted = currentDate.toLocaleTimeString();
+                    const timeZone = currentDate.toLocaleString('en-US', { timeZoneName: 'short' }).split(' ').pop();
+                    const timezoneOffset = currentDate.getTimezoneOffset();
+
+                    previewDate.textContent = currentDateFormatted + "\n" + currentTimeFormatted + " " + timeZone;
+                    signatureContent.innerHTML = "";
+
+                    if (selectedType === "text") {
+                        const text = document.getElementById("textSignatureContent").value;
+                        signatureContent.textContent = text;
+                        signatureContent.style.fontFamily = fontFamilySelect.value;
+                    } else if (selectedType === "image") {
+                        const file = document.getElementById("imageSignatureUpload").files[0];
+                        if (file) {
+                            const img = document.createElement("img");
+                            img.src = URL.createObjectURL(file);
+                            img.style.maxHeight = "200px";
+                            img.style.maxWidth = '150px';
+                            signatureContent.appendChild(img);
+                        }
+                    } else if (selectedType === "freehand") {
+                        const img = document.createElement("img");
+                        img.src = canvas.toDataURL();
+                        img.style.maxHeight = "300px";
+                        img.style.maxWidth = '200px';
+                        signatureContent.appendChild(img);
+                    }else if(selectedType ==="textSign"){
+                        const text = document.getElementById("textSignatureContent").value;
+                        signatureContent.textContent = text;
+                        signatureContent.style.fontFamily = fontFamilySelect.value;
+                    }
+
+                    previewSection.classList.remove("d-none");
+                    submitButton.classList.remove("d-none");
+                });
+
+                submitButton.addEventListener("click", () => {
+
+                    alert("Signature saved successfully.");
+                    window.location.href="./index.html"
+                });
+            });
+
+
+        
+
+
+
+
+    </script>
+</body>
+
+</html>

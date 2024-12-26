@@ -1,0 +1,23 @@
+step 1 : install node js 
+step 2 : npm init -yes
+step 3 : in package.json file add "type":"modules",
+"scripts": {
+    "start": "node server.js"
+  }
+step 4 : download Packages 
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "emailjs": "^4.0.3",
+    "express": "^4.21.1",
+    "express-fileupload": "^1.5.1",
+    "gridfs-stream": "^1.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.12.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16",
+    "nodemon": "^3.1.7"
+
+using command " npm install bcrypt dotenv emailjs express express-fileupload gridfs-stream jsonwebtoken mongodb multer nodemailer nodemon "
+
+step 5 : After successful installation the file will run in localhost:3000
+step 6 : use chrome, search for localhost:3000/index.html
